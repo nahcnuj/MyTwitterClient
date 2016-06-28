@@ -20,6 +20,8 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.*;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -69,8 +71,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         if (this.mTweetList == null || this.mTweetList.size() <= position || this.mTweetList.get(position) == null) return;
-
-        viewHolder.mTextView.setText(mTweetList.get(position).text);
+        viewHolder.mName.setText(mTweetList.get(position).user.name);
+        viewHolder.mScreenName.setText("@"+mTweetList.get(position).user.screenName);
+        viewHolder.mTweet.setText(mTweetList.get(position).text);
     }
 
     @Override
@@ -124,7 +127,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tweet)
-        public TextView mTextView;
+        public TextView mTweet;
+        @BindView(R.id.name)
+        public TextView mName;
+        @BindView(R.id.screen_name)
+        public TextView mScreenName;
 
         public ViewHolder(View v) {
             super(v);
