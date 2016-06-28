@@ -36,6 +36,7 @@ import io.fabric.sdk.android.Fabric;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private LayoutInflater mLayoutInflater;
     private List<Tweet> mTweetList;
+    private int loadedPages;
 
     public RecyclerAdapter(Context context) {
         Log.v("MTC", "RecyclerAdapter()");
@@ -45,6 +46,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(context, new Twitter(authConfig));
+
+        loadedPages = 0;
 
         TwitterCore.getInstance().logInGuest(new Callback<AppSession>() {
             @Override
@@ -84,14 +87,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     private void getTweets() {
+        if (loadedPages >= 10) return;
+
         TwitterApiClient client = TwitterCore.getInstance().getApiClient();
 
-        client.getSearchService().tweets("iQON", null, "ja", "ja", "recent", 100, null, null, null, true, new GuestCallback<Search>(new Callback<Search>() {
+        client.getSearchService().tweets("iQON", null, "ja", "ja", "recent", 100, null, null, mTweetList.isEmpty() ? null : mTweetList.get(loadedPages*100-1).id, true, new GuestCallback<Search>(new Callback<Search>() {
             @Override
             public void success(Result<Search> result) {
                 mTweetList.addAll(result.data.tweets);
 
-                notifyDataSetChanged();
+                notifyItemRangeInserted(loadedPages*100, 100);
+
+                ++loadedPages;
             }
 
             @Override
