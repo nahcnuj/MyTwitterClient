@@ -4,26 +4,13 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.AppSession;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.GuestCallback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Search;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.fabric.sdk.android.Fabric;
 
 public class MainFragment extends Fragment {
     @BindView(R.id.recycler_view)
@@ -49,6 +36,12 @@ public class MainFragment extends Fragment {
 
         mAdapter = new RecyclerAdapter(getActivity().getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new ScrollPagerListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
+            @Override
+            public void load() {
+                ((RecyclerAdapter)mRecyclerView.getAdapter()).getTweets();
+            }
+        });
 
         return view;
     }
