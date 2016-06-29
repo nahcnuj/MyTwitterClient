@@ -1,13 +1,17 @@
 package jp.nobody.nahcnuj.mytwitterclient;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Callback;
@@ -20,8 +24,6 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.*;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -33,6 +35,7 @@ import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<Tweet> mTweetList;
     private int mLoadedNumOfTweets;
@@ -40,7 +43,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Long maxId = -1L;
 
     public RecyclerAdapter(Context context) {
-        Log.v("MTC", "RecyclerAdapter()");
+        this.mContext = context;
         this.mLayoutInflater = LayoutInflater.from(context);
 
         this.mTweetList = Collections.synchronizedList(new ArrayList<Tweet>());
@@ -71,9 +74,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         if (this.mTweetList == null || this.mTweetList.size() <= position || this.mTweetList.get(position) == null) return;
-        viewHolder.mName.setText(mTweetList.get(position).user.name);
-        viewHolder.mScreenName.setText("@"+mTweetList.get(position).user.screenName);
-        viewHolder.mTweet.setText(mTweetList.get(position).text);
+        Tweet tweet = mTweetList.get(position);
+        Glide.with(mContext).load(tweet.user.profileImageUrl).into(viewHolder.mProfileImage);
+        viewHolder.mName.setText(tweet.user.name);
+        viewHolder.mScreenName.setText("@"+tweet.user.screenName);
+        viewHolder.mTweet.setText(tweet.text);
     }
 
     @Override
@@ -126,6 +131,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tweet_view)
+        public RelativeLayout mTweetView;
+        @BindView(R.id.profile_image)
+        public ImageView mProfileImage;
         @BindView(R.id.tweet)
         public TextView mTweet;
         @BindView(R.id.name)
