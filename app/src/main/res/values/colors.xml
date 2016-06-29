@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorTweetText">#333333</color>
     <color name="colorScreenName">#666666</color>
+    <color name="colorHorizontalLine">#CCCCCC</color>
 </resources>
