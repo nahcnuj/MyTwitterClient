@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorTweetText"
                 android:textStyle="bold"
-                android:text="なんかめっちゃクソほどあああああああああああああああああああ長い名前"
+                android:text="Name"
                 android:ellipsize="end"
                 android:singleLine="true" />
 
