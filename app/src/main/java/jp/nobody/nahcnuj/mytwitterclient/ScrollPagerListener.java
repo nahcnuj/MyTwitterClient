@@ -4,12 +4,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 public abstract class ScrollPagerListener extends RecyclerView.OnScrollListener {
+    private static final int LOAD_THRESHOLD = 10;
+
     private LinearLayoutManager mLayoutManager;
 
     private int mPrevTotalCount = 0;
     private boolean mIsLoading = false;
-
-    private static final int LOAD_THRESHOLD = 10;
 
     public ScrollPagerListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
@@ -23,9 +23,7 @@ public abstract class ScrollPagerListener extends RecyclerView.OnScrollListener 
             return;
         }
 
-        int visibleItemCount = recyclerView.getChildCount();
         int totalItemCount = mLayoutManager.getItemCount();
-        int firstVisibleItemPos = mLayoutManager.findFirstVisibleItemPosition();
         int lastVisibleItemPos = mLayoutManager.findLastVisibleItemPosition();
 
         if (totalItemCount != mPrevTotalCount) {
