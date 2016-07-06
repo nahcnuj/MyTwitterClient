@@ -1,10 +1,7 @@
 package jp.nobody.nahcnuj.mytwitterclient;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +37,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private LayoutInflater mLayoutInflater;
     private List<Tweet> mTweetList;
     private int mLoadedNumOfTweets;
-    private Long maxId = -1L;
+    private Long mMaxId = -1L;
     private boolean mWasLoadedAllTweets = false;
 
     private static final int MAX_SEARCH_TWEETS = 1000;
@@ -111,7 +108,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         TwitterApiClient client = TwitterCore.getInstance().getApiClient();
 
         client.getSearchService().tweets(
-                "iQON", null, "ja", "ja", "recent", Math.min(100, MAX_SEARCH_TWEETS - this.mLoadedNumOfTweets), null, null, maxId == -1L ? null : maxId, true,
+                "iQON", null, "ja", "ja", "recent", Math.min(100, MAX_SEARCH_TWEETS - this.mLoadedNumOfTweets), null, null, mMaxId == -1L ? null : mMaxId, true,
                 new GuestCallback<>(new Callback<Search>() {
                     @Override
                     public void success(Result<Search> result) {
@@ -132,7 +129,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                             nextResults.put(kv[0],kv[1]);
                         }
 
-                        maxId = Long.parseLong(nextResults.get("max_id"));
+                        mMaxId = Long.parseLong(nextResults.get("max_id"));
                     }
 
                     @Override
