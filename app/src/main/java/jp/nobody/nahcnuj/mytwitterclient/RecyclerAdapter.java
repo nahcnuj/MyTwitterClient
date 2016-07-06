@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private List<Tweet> mTweetList;
     private int mLoadedNumOfTweets;
     private Long maxId = -1L;
+    private boolean mWasLoadedAllTweets = false;
 
     private static final int MAX_SEARCH_TWEETS = 1000;
 
@@ -102,7 +104,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public void getTweets() {
-        if (this.mLoadedNumOfTweets >= MAX_SEARCH_TWEETS) {
+        if (this.mLoadedNumOfTweets >= MAX_SEARCH_TWEETS || this.mWasLoadedAllTweets) {
             return;
         }
 
@@ -120,6 +122,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         mLoadedNumOfTweets = mTweetList.size();
 
                         if (result.data.searchMetadata.nextResults == null) {
+                            mWasLoadedAllTweets = true;
                             return;
                         }
 
