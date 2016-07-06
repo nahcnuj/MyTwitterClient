@@ -4,11 +4,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
 apply plugin: 'android-apt'
 
 android {

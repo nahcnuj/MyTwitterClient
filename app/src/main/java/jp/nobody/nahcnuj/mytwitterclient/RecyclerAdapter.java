@@ -39,8 +39,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private LayoutInflater mLayoutInflater;
     private List<Tweet> mTweetList;
     private int mLoadedNumOfTweets;
-    private final int MAX_SEARCH_TWEETS = 1000;
     private Long maxId = -1L;
+
+    private static final int MAX_SEARCH_TWEETS = 1000;
+
+    private static final String TWITTER_KEY = "4PPk44OhJkCEVkrnuX5QK0tQl";
+    private static final String TWITTER_SECRET = "CD7SKVj3kDKV0GDerHF4aSXGk9O41AkBRyLrpw203jP8F14thW";
 
     public RecyclerAdapter(Context context) {
         this.mContext = context;
@@ -73,7 +77,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        if (this.mTweetList == null || this.mTweetList.size() <= position || this.mTweetList.get(position) == null) return;
+        if (this.mTweetList == null || this.mTweetList.size() <= position || this.mTweetList.get(position) == null) {
+            return;
+        }
         Tweet tweet = mTweetList.get(position);
         Glide.with(mContext).load(tweet.user.profileImageUrl).into(viewHolder.mProfileImage);
         viewHolder.mName.setText(tweet.user.name);
@@ -88,13 +94,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        if (this.mTweetList == null) return 0;
+        if (this.mTweetList == null) {
+            return 0;
+        }
 
         return this.mTweetList.size();
     }
 
     public void getTweets() {
-        if (this.mLoadedNumOfTweets >= MAX_SEARCH_TWEETS) return;
+        if (this.mLoadedNumOfTweets >= MAX_SEARCH_TWEETS) {
+            return;
+        }
 
         TwitterApiClient client = TwitterCore.getInstance().getApiClient();
 
@@ -148,7 +158,4 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             ButterKnife.bind(this, v);
         }
     }
-
-    private static final String TWITTER_KEY = "4PPk44OhJkCEVkrnuX5QK0tQl";
-    private static final String TWITTER_SECRET = "CD7SKVj3kDKV0GDerHF4aSXGk9O41AkBRyLrpw203jP8F14thW";
 }
