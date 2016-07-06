@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/tweet_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:id="@+id/tweet_view">
+        android:layout_margin="16dp">
 
         <ImageView
             android:id="@+id/profile_image"
             android:layout_width="48dp"
-            android:layout_height="48dp"/>
+            android:layout_height="48dp" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/user_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/profile_image"
             android:layout_toRightOf="@id/profile_image"
-            android:id="@+id/user_info">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/name"
-                android:layout_weight="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorTweetText"
-                android:textStyle="bold"
-                android:text="Name"
+                android:layout_weight="0"
                 android:ellipsize="end"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@color/colorTweetText"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/screen_name"
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
-                android:textColor="@color/colorScreenName"
-                android:text="Screen"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:textColor="@color/colorScreenName" />
 
         </LinearLayout>
 
@@ -52,12 +52,13 @@
             android:id="@+id/tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@id/profile_image"
             android:layout_below="@id/user_info"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/profile_image"
+            android:layout_toRightOf="@id/profile_image"
             android:lineSpacingExtra="4dp"
-            android:textColor="@color/colorTweetText"
-            android:text="Tweet" />
+            android:textColor="@color/colorTweetText" />
 
     </RelativeLayout>
 
@@ -65,7 +66,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorHorizontalLine"
-        android:layout_below="@id/tweet_view"/>
+        android:layout_below="@id/tweet_view"
+        android:background="@color/colorHorizontalLine" />
 
 </RelativeLayout>

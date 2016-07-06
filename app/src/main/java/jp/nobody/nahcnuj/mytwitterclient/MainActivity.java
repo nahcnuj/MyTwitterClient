@@ -1,38 +1,24 @@
 package jp.nobody.nahcnuj.mytwitterclient;
 
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 
-import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.GuestCallback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.models.Search;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.StatusesService;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MAX_SEARCH_TWEETS = 1000;
@@ -56,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.Adapter adapter = new RecyclerAdapter(this.getApplicationContext());
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnScrollListener(new ScrollPagerListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
+        mRecyclerView.addOnScrollListener(new ScrollPagerListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
             @Override
             public void load() {
                 getTweets();
@@ -88,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 new GuestCallback<>(new Callback<Search>() {
                     @Override
                     public void success(Result<Search> result) {
-                        ((RecyclerAdapter)mRecyclerView.getAdapter()).addDataOf(result.data.tweets);
+                        ((RecyclerAdapter) mRecyclerView.getAdapter()).addDataOf(result.data.tweets);
 
                         mRecyclerView.getAdapter().notifyItemRangeInserted(mLoadedNumOfTweets, 100);
 
@@ -99,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        Map<String,String> nextResults = new LinkedHashMap<>();
+                        Map<String, String> nextResults = new LinkedHashMap<>();
                         for (String pair : result.data.searchMetadata.nextResults.substring(1).split("&")) {
                             String kv[] = pair.split("=");
-                            nextResults.put(kv[0],kv[1]);
+                            nextResults.put(kv[0], kv[1]);
                         }
 
                         mMaxId = Long.parseLong(nextResults.get("max_id"));
