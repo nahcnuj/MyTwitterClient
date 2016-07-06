@@ -5,11 +5,9 @@
     android:layout_height="match_parent"
     tools:context="jp.nobody.nahcnuj.mytwitterclient.MainActivity">
 
-    <fragment
-        android:name="jp.nobody.nahcnuj.mytwitterclient.MainFragment"
-        android:id="@+id/fragment"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="0dp"
-        tools:layout="@layout/fragment_main" />
+        android:layout_height="match_parent" />
+
 </RelativeLayout>

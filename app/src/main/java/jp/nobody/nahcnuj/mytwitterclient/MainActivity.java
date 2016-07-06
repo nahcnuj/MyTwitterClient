@@ -1,8 +1,13 @@
 package jp.nobody.nahcnuj.mytwitterclient;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.AppSession;
@@ -17,12 +22,34 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.services.StatusesService;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.recycler_view)
+    public RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new RecyclerAdapter(this.getApplicationContext());
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new ScrollPagerListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
+            @Override
+            public void load() {
+                ((RecyclerAdapter)mRecyclerView.getAdapter()).getTweets();
+            }
+        });
     }
 }
