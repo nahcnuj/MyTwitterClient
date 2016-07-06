@@ -30,8 +30,6 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     public RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new RecyclerAdapter(this.getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
+        RecyclerView.Adapter adapter = new RecyclerAdapter(this.getApplicationContext());
+        mRecyclerView.setAdapter(adapter);
         mRecyclerView.addOnScrollListener(new ScrollPagerListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
             @Override
             public void load() {

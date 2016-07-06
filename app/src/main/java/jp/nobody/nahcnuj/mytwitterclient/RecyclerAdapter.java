@@ -36,7 +36,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<Tweet> mTweetList;
-    private int mLoadedNumOfTweets;
+    private int mLoadedNumOfTweets = 0;
     private Long mMaxId = -1L;
     private boolean mWasLoadedAllTweets = false;
 
@@ -53,8 +53,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(context, new Twitter(authConfig));
-
-        this.mLoadedNumOfTweets = 0;
 
         TwitterCore.getInstance().logInGuest(new Callback<AppSession>() {
             @Override
