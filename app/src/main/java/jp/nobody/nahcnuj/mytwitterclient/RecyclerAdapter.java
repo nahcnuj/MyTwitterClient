@@ -36,35 +36,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<Tweet> mTweetList;
-    private int mLoadedNumOfTweets = 0;
-    private Long mMaxId = -1L;
-    private boolean mWasLoadedAllTweets = false;
-
-    private static final int MAX_SEARCH_TWEETS = 1000;
-
-    private static final String TWITTER_KEY = "4PPk44OhJkCEVkrnuX5QK0tQl";
-    private static final String TWITTER_SECRET = "CD7SKVj3kDKV0GDerHF4aSXGk9O41AkBRyLrpw203jP8F14thW";
 
     public RecyclerAdapter(Context context) {
         this.mContext = context;
         this.mLayoutInflater = LayoutInflater.from(context);
 
-        this.mTweetList = Collections.synchronizedList(new ArrayList<Tweet>());
-
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(context, new Twitter(authConfig));
-
-        TwitterCore.getInstance().logInGuest(new Callback<AppSession>() {
-            @Override
-            public void success(Result<AppSession> result) {
-                getTweets();
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                exception.printStackTrace();
-            }
-        });
+        this.mTweetList = new ArrayList<>();
     }
 
     @Override
@@ -98,44 +75,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return this.mTweetList.size();
     }
 
-    public void getTweets() {
-        if (this.mLoadedNumOfTweets >= MAX_SEARCH_TWEETS || this.mWasLoadedAllTweets) {
-            return;
-        }
-
-        TwitterApiClient client = TwitterCore.getInstance().getApiClient();
-
-        client.getSearchService().tweets(
-                "iQON", null, "ja", "ja", "recent", Math.min(100, MAX_SEARCH_TWEETS - this.mLoadedNumOfTweets), null, null, mMaxId == -1L ? null : mMaxId, true,
-                new GuestCallback<>(new Callback<Search>() {
-                    @Override
-                    public void success(Result<Search> result) {
-                        mTweetList.addAll(result.data.tweets);
-
-                        notifyItemRangeInserted(mLoadedNumOfTweets, 100);
-
-                        mLoadedNumOfTweets = mTweetList.size();
-
-                        if (result.data.searchMetadata.nextResults == null) {
-                            mWasLoadedAllTweets = true;
-                            return;
-                        }
-
-                        Map<String,String> nextResults = new LinkedHashMap<>();
-                        for (String pair : result.data.searchMetadata.nextResults.substring(1).split("&")) {
-                            String kv[] = pair.split("=");
-                            nextResults.put(kv[0],kv[1]);
-                        }
-
-                        mMaxId = Long.parseLong(nextResults.get("max_id"));
-                    }
-
-                    @Override
-                    public void failure(TwitterException exception) {
-                        exception.printStackTrace();
-                    }
-                })
-        );
+    public void addDataOf(List<Tweet> tweets) {
+        this.mTweetList.addAll(tweets);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
